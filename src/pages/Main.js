@@ -247,42 +247,49 @@ function Main() {
 
 
 
-            {loggedIn && (<div className="flex justify-center overflow-x">
-                <div className="w-1/2 bg-gray-800 p-6 rounded-lg mt-2">
-                    <h1 className="text-2xl text-white mb-5">Shortened URLs</h1>
-                    {urls ? <table className="table-auto text-white table-auto overflow-scroll w-full">
-                        <thead>
-                            <tr>
-                                <th className="px-4 py-2">Original URL</th>
-                                <th className="px-4 py-2">Shortened URL</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            {loggedIn && (
+    <div className="flex justify-center overflow-x">
+        <div className="w-1/2 bg-gray-800 p-6 rounded-lg mt-2">
+            <h1 className="text-2xl text-white mb-5">Shortened URLs</h1>
+            {urls ? (
+                <table className="table-auto text-white table-auto overflow-scroll w-full">
+                    <thead>
+                        <tr>
+                            <th className="px-4 py-2">Original URL</th>
+                            <th className="px-4 py-2">Shortened URL</th>
+                            <th className="px-4 py-2">Click Count</th> {/* New column for click count */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {urls.map((url, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td className="border px-2 py-2">{url.originalUrl}</td>
+                                    <td className="border px-2 py-2 flex justify-between">
+                                        <span>http://yourlink.live/{url.urlSlug}</span>
+                                        <button
+                                            className="bg-blue-500 text-white p-1 rounded font-medium hover:bg-blue-300 ml-3"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                copyClipboard(`http://yourlink.live/${url.urlSlug}`);
+                                            }}
+                                        >
+                                            Copy
+                                        </button>
+                                    </td>
+                                    <td className="border px-2 py-2">{url.clickCount || 0}</td> {/* Display click count */}
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            ) : (
+                <h2>Loading...</h2>
+            )}
+        </div>
+    </div>
+)}
 
-                            {urls.map(
-                                (url, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td className="border px-2 py-2">{url.originalUrl}</td>
-
-                                            <td className="border px-2 py-2 flex justify-between">
-                                                <span>http://yourlink.live/{url.urlSlug}</span>
-                                                <button className="bg-blue-500 text-white p-1 rounded font-medium hover:bg-blue-300 ml-3" onClick={(e) => {
-                                                    e.preventDefault()
-                                                    copyClipboard(`http://yourlink.live/${url.urlSlug}`)
-                                                }}>Copy</button>
-                                            </td>
-
-                                        </tr>
-                                    )
-                                }
-                            )}
-                        </tbody>
-                    </table> : <h2>Loading...</h2>
-                    }
-                </div>
-            </div>)
-            }
 
 
         </div>
